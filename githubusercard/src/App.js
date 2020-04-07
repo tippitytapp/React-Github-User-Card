@@ -1,26 +1,51 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import GitHubCard from "./components/githubcard";
+import GitHubFollows from "./components/githubfollowers";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component{
+constructor(){
+  super();
+  this.state={
+    userInfo: {},
+    followersInfo: []
+  };
 }
 
+componentDidMount(){
+  axios.get('https://api.github.com/users/tippitytapp').then(response => {
+    console.log(response.data);
+    this.setState({
+      userInfo: response.data
+    })
+  })
+
+  axios.get('https://api.github.com/users/tippitytapp/followers').then(response => {
+    console.log(response.data);
+    response.data.forEach(user =>{
+    axios.get(user.url).then(response => {
+    console.log(response);
+    this.setState({
+      userInfo: [...this.state.userInfo, response.data]
+    })
+        })
+      })
+  })
+}
+
+
+render(){
+  return (
+      <div className="githubCardParent">
+        <h1>React Github User Cards</h1>
+        <GitHubCard data={this.state.userInfo} />
+      </div>
+  )
+}
+
+}
+
+
 export default App;
+

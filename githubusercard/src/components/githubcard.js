@@ -15,11 +15,12 @@ function GitHubCard(props){
             <p>Bio: {props.data.bio}</p>
             <div className="followers">
                 <h4>My Followers</h4>
-                {props.followers.map(item, i) =>(
+                {props.followers.map((item, i) => (
+                    <>
                     <img width="150px" src={item.avatar_url} alt={item.login}/>
                     <h3>{item.login}</h3>
-                    <a href={item.html_url}>{item.html_url}</a>
-                )}
+                    </>
+                ))}
             </div>
 
         </div>

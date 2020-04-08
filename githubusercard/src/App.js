@@ -25,6 +25,7 @@ componentDidMount(){
       followersInfo: response.data
     })
   })
+}
 render(){
   return (
       <div className="githubCardParent">
